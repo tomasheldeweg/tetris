@@ -24,7 +24,7 @@ def main():
     fps = 60
     ticks = 0
 
-    board.get_piece()
+
     running = True
     pressed_key_tick = 0
     while running:

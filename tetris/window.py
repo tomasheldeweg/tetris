@@ -23,7 +23,8 @@ class Board:
         pygame.font.init()
         self.FONT = pygame.font.SysFont('calibri', int(dim/50))
         self.grid = np.zeros((self.BOARD_HEIGHT, self.BOARD_WIDTH))
-        self.p = None
+        self.p = Piece(random.choice(list(SHAPES)))
+        self.next_p = Piece(random.choice(list(SHAPES)))
         self.level = 0
         self.score = 0
         self.total_lines = 0
@@ -34,23 +35,38 @@ class Board:
         pygame.display.set_caption('Tetris')
         self._draw_layout()
         self._draw_score()
+        self._draw_next_piece()
 
     def _reset_game(self):
+        self.screen.fill(BLACK)
+        self.level = 0
+        self.score = 0
+        self.total_lines = 0
+        self.p = Piece(random.choice(list(SHAPES)))
+        self.next_p = Piece(random.choice(list(SHAPES)))
         self.grid = np.zeros((self.BOARD_HEIGHT, self.BOARD_WIDTH))
+        self._draw_layout()
         self.draw_board()
-        pygame.time.wait(1000)
+        self._draw_score()
+        self._draw_next_piece()
+
+
 
     def get_piece(self):
         self._check_complete_lines()
-        self.p = Piece(random.choice(list(SHAPES)))
+        self.p = self.next_p
+        self.next_p = Piece(random.choice(list(SHAPES)))
 
         if not self._valid_piece_position():
             print(' GAME OVER ')
             pygame.time.wait(3000)
             self._reset_game()
+            return None
 
         self.score += 20 * (self.level + 1)
         self._draw_score()
+        self._draw_next_piece()
+
 
 
     def _check_complete_lines(self):
@@ -99,6 +115,7 @@ class Board:
                 pygame.draw.line(self.screen, WHITE, (xpos, ypos + line * self.BLOCK_SIZE),
                                  (self.size[0] - xpos, ypos + line * self.BLOCK_SIZE), 1)
 
+        # Score layout
         score_x = self.dim - self.BLOCK_SIZE * 8
         score_y = self.dim / 10
         points = [(score_x, score_y),
@@ -107,13 +124,27 @@ class Board:
                   (score_x, score_y + 70)]
         pygame.draw.lines(self.screen, WHITE, True, points, 1)
 
-        # Draw score box
+        #
+
     def _draw_piece(self):
         # Drawing start position
         xpos = self.dim / 3
         ypos = self.dim / 10
         colour = COLOURS[self.p.value]
         for (y, x) in tuple(zip(*self.p.coords)):
+            pygame.draw.rect(
+                self.screen,
+                colour,
+                (xpos + x * self.BLOCK_SIZE + 1, ypos + y * self.BLOCK_SIZE + 1, self.BLOCK_SIZE - 1,
+                 self.BLOCK_SIZE - 1)
+            )
+
+    def _draw_next_piece(self):
+        # Drawing start position
+        xpos = self.dim / 9
+        ypos = self.dim / 10
+        colour = COLOURS[self.next_p.value]
+        for (y, x) in tuple(zip(*self.next_p.coords)):
             pygame.draw.rect(
                 self.screen,
                 colour,
