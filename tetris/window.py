@@ -59,7 +59,6 @@ class Board:
 
         if not self._valid_piece_position():
             print(' GAME OVER ')
-            pygame.time.wait(3000)
             self._reset_game()
             return None
 
@@ -161,6 +160,14 @@ class Board:
         # Drawing start position
         xpos = self.dim / 9
         ypos = self.dim / 10
+        for y in range(4):
+            for x in range(4):
+                pygame.draw.rect(
+                    self.screen,
+                    BLACK,
+                    (xpos + x * self.BLOCK_SIZE + 1, ypos + y * self.BLOCK_SIZE + 1, self.BLOCK_SIZE - 1, self.BLOCK_SIZE - 1)
+                )
+
         for y in range(self.next_p.piece.shape[1]):
             for x in range(self.next_p.piece.shape[0]):
                 colour = COLOURS[self.next_p.piece[y, x]]
