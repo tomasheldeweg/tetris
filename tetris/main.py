@@ -43,6 +43,8 @@ def main():
                     board.move_piece(-1, 0)
                 elif event.key == K_DOWN:
                     board.move_piece(0, 1)
+                elif event.key == K_UP:
+                    board.fast_drop_piece()
                 elif event.key == K_RETURN:
                     board.get_piece()
 

@@ -155,6 +155,15 @@ class Board:
                 self._piece_to_board()
                 self.get_piece()
 
+    def fast_drop_piece(self):
+        if self.p:
+            y = 1
+            while self._valid_piece_position(0, y):
+                y += 1
+            self.move_piece(0, y-1)
+            self._piece_to_board()
+            self.get_piece()
+
     def _piece_to_board(self):
         self.grid[self.p.coords] = self.p.value
 
