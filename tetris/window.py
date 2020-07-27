@@ -124,7 +124,25 @@ class Board:
                   (score_x, score_y + 70)]
         pygame.draw.lines(self.screen, WHITE, True, points, 1)
 
-        #
+        xpos = self.dim / 9
+        ypos = self.dim / 10
+        # Next piece layout
+        for line in range(5):
+            if line == 0 or line == 4:
+                pygame.draw.line(self.screen, RED, (xpos + line * self.BLOCK_SIZE, ypos),
+                                 (xpos + line * self.BLOCK_SIZE, ypos + self.BLOCK_SIZE * 4), 2)
+            else:
+                pygame.draw.line(self.screen, WHITE, (xpos + line * self.BLOCK_SIZE, ypos),
+                                 (xpos + line * self.BLOCK_SIZE, ypos + self.BLOCK_SIZE * 4), 1)
+
+        # Draw grid x lines
+        for line in range(5):
+            if line == 0 or line == 4:
+                pygame.draw.line(self.screen, RED, (xpos, ypos + line * self.BLOCK_SIZE),
+                                 (xpos + self.BLOCK_SIZE * 4, ypos + line * self.BLOCK_SIZE), 2)
+            else:
+                pygame.draw.line(self.screen, WHITE, (xpos, ypos + line * self.BLOCK_SIZE),
+                                 (xpos + self.BLOCK_SIZE * 4, ypos + line * self.BLOCK_SIZE), 1)
 
     def _draw_piece(self):
         # Drawing start position
@@ -143,14 +161,14 @@ class Board:
         # Drawing start position
         xpos = self.dim / 9
         ypos = self.dim / 10
-        colour = COLOURS[self.next_p.value]
-        for (y, x) in tuple(zip(*self.next_p.coords)):
-            pygame.draw.rect(
-                self.screen,
-                colour,
-                (xpos + x * self.BLOCK_SIZE + 1, ypos + y * self.BLOCK_SIZE + 1, self.BLOCK_SIZE - 1,
-                 self.BLOCK_SIZE - 1)
-            )
+        for y in range(self.next_p.piece.shape[1]):
+            for x in range(self.next_p.piece.shape[0]):
+                colour = COLOURS[self.next_p.piece[y, x]]
+                pygame.draw.rect(
+                    self.screen,
+                    colour,
+                    (xpos + x * self.BLOCK_SIZE + 1, ypos + y * self.BLOCK_SIZE + 1, self.BLOCK_SIZE - 1, self.BLOCK_SIZE - 1)
+                )
 
     def _draw_grid(self):
         # Drawing start position
