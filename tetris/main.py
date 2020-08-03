@@ -62,7 +62,7 @@ def main():
         pygame.display.update()
         clock.tick(fps)
         ticks += 1
-        if ticks % fps == 0:
+        if ticks % board.get_speed() == 0:
             board.move_piece(0, 1)
         board.draw_board()
 

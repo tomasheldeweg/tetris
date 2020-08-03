@@ -8,8 +8,29 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 
-
-
+DROP_SPEED = {
+    0: 53,
+    1: 49,
+    2: 45,
+    3: 41,
+    4: 37,
+    5: 33,
+    6: 28,
+    7: 22,
+    8: 17,
+    9: 11,
+    10:	10,
+    11: 9,
+    12: 8,
+    13: 7,
+    14: 6,
+    15: 6,
+    16: 5,
+    17: 5,
+    18: 4,
+    19: 4,
+    20: 3,
+}
 
 
 class Board:
@@ -66,7 +87,10 @@ class Board:
         self._draw_score()
         self._draw_next_piece()
 
-
+    def get_speed(self):
+        if self.level > 20:
+            return 3
+        return DROP_SPEED[self.level]
 
     def _check_complete_lines(self):
         completed_lines = np.where(self.grid.all(axis=1))[0]
